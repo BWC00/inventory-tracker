@@ -1,0 +1,4 @@
+{
+	"admin": [{ "resources": "barcode-scanners", "permissions": "*" }],
+	"counter": [{ "resources": "barcode-scanners", "permissions": [] }]
+}

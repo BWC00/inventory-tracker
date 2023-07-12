@@ -1,0 +1,4 @@
+{
+	"admin": [{ "resources": "users", "permissions": "*" }],
+	"counter": [{ "resources": "users", "permissions": [] }]
+}

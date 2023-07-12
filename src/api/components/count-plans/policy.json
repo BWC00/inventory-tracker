@@ -1,0 +1,4 @@
+{
+	"admin": [{ "resources": "count-plans", "permissions": "*" }],
+	"counter": [{ "resources": "count-plans", "permissions": [] }]
+}

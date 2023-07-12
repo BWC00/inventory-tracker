@@ -1,0 +1,4 @@
+{
+	"admin": [{ "resources": "subproducts", "permissions": "*" }],
+	"counter": [{ "resources": "subproducts", "permissions": [] }]
+}

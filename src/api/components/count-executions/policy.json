@@ -1,0 +1,4 @@
+{
+	"admin": [{ "resources": "count-executions", "permissions": "*" }],
+	"counter": [{ "resources": "count-executions", "permissions": ["add-user-product-count"] }]
+}
