@@ -9,11 +9,11 @@ try {
 	const policies = JSON.parse(readFileSync('./dist/output/policies.combined.json', 'utf-8'));
 	policy.allow([
 		{
-			allows: policies.Admin,
+			allows: policies.admin,
 			roles: ['admin']
 		},
 		{
-			allows: policies.User,
+			allows: policies.counter,
 			roles: ['counter']
 		}
 	]);
