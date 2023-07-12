@@ -9,6 +9,12 @@ export class ProductRepository extends AbsRepository<IProduct, ProductDTO> {
 		super('products');
 	}
 
+	/**
+	 * Add subproduct to product subproduct collection in db
+	 *
+	 * @param productSubproduct subproduct with quantity
+	 * @returns added product subproduct record
+	 */
 	addSubproduct(productSubproduct: ProductSubproductDTO): Promise<IProductSubproduct> {
 		return new Promise((resolve, reject) => {
 			pool.query(

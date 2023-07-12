@@ -15,12 +15,21 @@ export class UserController extends AbsController<IUser, UserDTO, UserRepository
 		super('users', new UserRepository(), new UserDTO());
 	}
 
+	/**
+	 * Create user
+	 *
+	 * @param req Express request
+	 * @param res Express response
+	 * @param next Express next
+	 * @returns HTTP response
+	 */
 	@bind
 	async create(req: Request, res: Response, next: NextFunction) {
 		try {
 
 			const dto = this.tdto.fromRequest(req);
 
+			// Check if user exists
 			const existingUser = await this.repo.readByEmail(dto.email);
 			if (existingUser !== undefined) {
 				return res.status(400).json({ status: 400, error: 'Email is already taken' });

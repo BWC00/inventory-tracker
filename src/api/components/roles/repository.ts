@@ -9,6 +9,12 @@ export class RoleRepository extends AbsRepository<IRole, RoleDTO> {
 		super('roles');
 	}
 
+	/**
+	 * Get role by name from db
+	 *
+	 * @param name name of the role
+	 * @returns role record with requested name
+	 */
 	readByName(name: string): Promise<IRole> {
 		return new Promise((resolve, reject) => {
 			pool.query<IRole>('SELECT * FROM roles WHERE name = $1', [name],

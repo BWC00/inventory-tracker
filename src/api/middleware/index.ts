@@ -32,7 +32,7 @@ export function registerMiddleware(router: Router): void {
 }
 
 /**
- * Init Express error handler
+ * Init Express error handler middleware
  *
  * @param {Router} router
  * @returns {void}

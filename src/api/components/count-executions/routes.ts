@@ -18,7 +18,11 @@ export class CountExecutionRoutes implements IComponentRoutes<CountExecutionCont
 		this.initRoutes();
 	}
 
+	/**
+	 * Initialize the count execution routes.
+	 */
 	initRoutes(): void {
+		// Read all count executions route
 		this.router.get(
 			'/',
 			this.authSerivce.isAuthorized(),
@@ -26,6 +30,7 @@ export class CountExecutionRoutes implements IComponentRoutes<CountExecutionCont
 			this.controller.readAll
 		);
 
+		// Read a single count execution route
 		this.router.get(
 			'/:id',
 			this.authSerivce.isAuthorized(),
@@ -35,6 +40,7 @@ export class CountExecutionRoutes implements IComponentRoutes<CountExecutionCont
 			this.controller.read
 		);
 
+		// Read pricing of an ended count execution
 		this.router.get(
 			'/:id/pricing',
 			this.authSerivce.isAuthorized(),
@@ -45,6 +51,7 @@ export class CountExecutionRoutes implements IComponentRoutes<CountExecutionCont
 			this.controller.getPricing
 		);
 
+		// Add user product counts to an ongoing count execution
         this.router.post(
 			'/:id/user-product-counts',
 			this.authSerivce.isAuthorized(),
@@ -56,6 +63,7 @@ export class CountExecutionRoutes implements IComponentRoutes<CountExecutionCont
 			this.controller.addUserProductCount
 		);
 
+		// Delete a count execution route
 		this.router.delete(
 			'/:id',
 			this.authSerivce.isAuthorized(),

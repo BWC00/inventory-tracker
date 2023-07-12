@@ -18,7 +18,11 @@ export class AuthRoutes implements IComponentRoutes<AuthController> {
 		this.initRoutes();
 	}
 
+	/**
+	 * Initialize the authentication routes.
+	 */
 	initRoutes(): void {
+		// Sign In route
 		this.router.post(
 			'/signin',
 			body('email').isEmail(),
@@ -27,6 +31,7 @@ export class AuthRoutes implements IComponentRoutes<AuthController> {
 			this.controller.signinUser
 		);
 
+		// Register route
 		this.router.post(
 			'/register',
 			body('email').isEmail(),
@@ -35,7 +40,8 @@ export class AuthRoutes implements IComponentRoutes<AuthController> {
 			this.controller.registerUser
 		);
 
-		this.router.post(
+		// Unregister route
+		this.router.delete(
 		'/unregister',
 		this.authSerivce.isAuthorized(),
 		this.controller.unregisterUser);

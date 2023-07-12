@@ -17,6 +17,7 @@ export const env = {
 	}
 };
 
+// Used as value for 'from' field for sending emails
 export const mails = {
 	sender: process.env.SMTP_SENDER || "shaki2632@gmail.com"
 };

@@ -16,14 +16,22 @@ export class CountExecutionController extends AbsController<ICountExecution, Cou
 		super('countexecutions', new CountExecutionRepository(), new CountExecutionDTO());
 	}
 
+	/**
+	 * Get total pricing, pricing per product or pricing per category of a count execution
+	 *
+	 * @param req Express request
+	 * @param res Express response
+	 * @param next Express next
+	 * @returns HTTP response
+	 */
 	@bind
 	async getPricing(req: Request, res: Response, next: NextFunction) {
 		try {	
 			const { id } = req.params;
 			const { order_by } = req.query;
 
+			// Read the count execution and check for its existence and if it is still ongoing
 			const countExecution = await this.repo.read(+id);
-
 			if (!countExecution) {
 				return res.status(404).json({ status: 404, error: 'Count execution not found' });
 			} else if (countExecution.status == 'ongoing') {
@@ -31,7 +39,8 @@ export class CountExecutionController extends AbsController<ICountExecution, Cou
 			}
 
 			let pricing: IPricing[] | IPricing;
-			
+
+			// Retrieve pricing based on the specified order_by parameter
 			switch(order_by) {
 				case 'product':
 					pricing = await this.repo.getPricingByProduct(+id);
@@ -49,11 +58,21 @@ export class CountExecutionController extends AbsController<ICountExecution, Cou
 		}
 	}
 
+	/**
+	 * Add user product counts to an ongoing countexecution
+	 *
+	 * @param req Express request
+	 * @param res Express response
+	 * @param next Express next
+	 * @returns HTTP response
+	 */
 	@bind
 	async addUserProductCount(req: Request, res: Response, next: NextFunction) {
 		try {
+			// Create a UserProductCountDTO instance from the request
 			const dto = UserProductCountDTO.fromRequest(req);
 
+			// Read the count execution and check for its existence and if it ended
 			const countExecution = await this.repo.read(dto.countExecutionId);
 			if (!countExecution) {
 				return res.status(404).json({ status: 404, error: 'Count execution not found' });
@@ -61,13 +80,13 @@ export class CountExecutionController extends AbsController<ICountExecution, Cou
 				return res.status(403).json({status: 403, error: 'Count execution ended' });
 			}
 
+			// Read the barcode scanner and check for its existence
 			const barcodeScanner: IBarcodeScanner = await this.barcodeScannerRepo.read(dto.barcodeScannerId);
 			if (!barcodeScanner) {
 				return res.status(404).json({ status: 404, error: `Barcode scanner not found` });
 			}
 
-			
-
+			// Add the user product count
 			const userProductCount = await this.repo.addUserProductCount(dto);
 
 			return res.status(201).send(userProductCount);
@@ -76,19 +95,28 @@ export class CountExecutionController extends AbsController<ICountExecution, Cou
 		}
 	}
 
+	/**
+	 * Delete an ended count execution
+	 *
+	 * @param req Express request
+	 * @param res Express response
+	 * @param next Express next
+	 * @returns HTTP response
+	 */
 	@bind
 	async delete(req: Request, res: Response, next: NextFunction) {
 		try {
 			const { id } = req.params;
 
+			// Read the count execution and check for its existence and if it is still ongoing
 			const countExecution = await this.repo.read(+id);
-
 			if (!countExecution) {
 				return res.status(404).json({ status: 404, error: 'Count execution not found' });
 			} else if (countExecution.status == 'ongoing') {
 				return res.status(403).json({status: 403, error: 'Count execution is still ongoing' });
 			}
-
+			
+			// Delete the count execution
 			await this.repo.delete(+id);
 
 			return res.status(204).send();

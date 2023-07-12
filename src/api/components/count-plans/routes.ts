@@ -18,7 +18,11 @@ export class CountPlanRoutes implements IComponentRoutes<CountPlanController> {
 		this.initRoutes();
 	}
 
+	/**
+	 * Initialize the routes for count plans
+	 */
 	initRoutes(): void {
+		// Route for retrieving all count plans
 		this.router.get(
 			'/',
 			this.authSerivce.isAuthorized(),
@@ -26,6 +30,7 @@ export class CountPlanRoutes implements IComponentRoutes<CountPlanController> {
 			this.controller.readAll
 		);
 
+		// Route for retrieving a specific count plan by ID
 		this.router.get(
 			'/:id',
 			this.authSerivce.isAuthorized(),
@@ -35,6 +40,7 @@ export class CountPlanRoutes implements IComponentRoutes<CountPlanController> {
 			this.controller.read
 		);
 
+		// Route for creating a new count plan
 		this.router.post(
 			'/',
 			this.authSerivce.isAuthorized(),
@@ -44,6 +50,7 @@ export class CountPlanRoutes implements IComponentRoutes<CountPlanController> {
 			this.controller.create
 		);
 
+		// Route for retrieving all users subscribed to a count plan
         this.router.get(
 			'/:id/users',
 			this.authSerivce.isAuthorized(),
@@ -53,6 +60,7 @@ export class CountPlanRoutes implements IComponentRoutes<CountPlanController> {
 			this.controller.getUsers
 		);
 
+		// Route for adding/subscribing a user to a count plan
         this.router.post(
 			'/:id/users',
 			this.authSerivce.isAuthorized(),
@@ -63,6 +71,7 @@ export class CountPlanRoutes implements IComponentRoutes<CountPlanController> {
 			this.controller.addUser
 		);
 
+		// Route for deleting a count plan
 		this.router.delete(
 			'/:id',
 			this.authSerivce.isAuthorized(),

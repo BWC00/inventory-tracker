@@ -15,6 +15,14 @@ export abstract class AbsController<T, TDTO extends { fromRequest(req: Request)}
 		this.tdto = tdto;
 	}
 
+	/**
+	 * Read all entities
+	 *
+	 * @param req Express request
+	 * @param res Express response
+	 * @param next Express next
+	 * @returns HTTP response
+	 */
 	@bind
 	async readAll(req: Request, res: Response, next: NextFunction) {
 		try {
@@ -25,7 +33,15 @@ export abstract class AbsController<T, TDTO extends { fromRequest(req: Request)}
 			return next(err);
 		}
     }
-    
+
+	/**
+	 * Read entity
+	 *
+	 * @param req Express request
+	 * @param res Express response
+	 * @param next Express next
+	 * @returns HTTP response
+	 */
     @bind
 	async read(req: Request, res: Response, next: NextFunction) {
 		try {
@@ -42,6 +58,14 @@ export abstract class AbsController<T, TDTO extends { fromRequest(req: Request)}
 		}
     }
 
+	/**
+	 * Create entity
+	 *
+	 * @param req Express request
+	 * @param res Express response
+	 * @param next Express next
+	 * @returns HTTP response
+	 */
 	@bind
 	async create(req: Request, res: Response, next: NextFunction) {
 		try {
@@ -54,6 +78,14 @@ export abstract class AbsController<T, TDTO extends { fromRequest(req: Request)}
 		}
 	}
 
+	/**
+	 * Update entity
+	 *
+	 * @param req Express request
+	 * @param res Express response
+	 * @param next Express next
+	 * @returns HTTP response
+	 */
 	@bind
 	async update(req: Request, res: Response, next: NextFunction) {
 		try {
@@ -68,6 +100,14 @@ export abstract class AbsController<T, TDTO extends { fromRequest(req: Request)}
 		}
 	}
 
+	/**
+	 * Delete entity
+	 *
+	 * @param req Express request
+	 * @param res Express response
+	 * @param next Express next
+	 * @returns HTTP response
+	 */
     @bind
 	async delete(req: Request, res: Response, next: NextFunction) {
 		try {

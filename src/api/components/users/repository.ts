@@ -9,6 +9,12 @@ export class UserRepository extends AbsRepository<IUser, UserDTO> {
 		super('users');
 	}
 
+	/**
+	 * Get user by email from db
+	 *
+	 * @param email email of the user
+	 * @returns user record with requested email
+	 */
 	readByEmail(email: string): Promise<IUser> {
 		return new Promise((resolve, reject) => {
 			pool.query<IUser>('SELECT * FROM users WHERE email = $1', [email], (err, res) => {

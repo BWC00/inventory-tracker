@@ -9,6 +9,12 @@ export class CountExecutionRepository extends AbsRepository<ICountExecution, Cou
 		super('count_executions');
 	}
 
+	/**
+	 * Add user product count record in db
+	 *
+	 * @param userProductCount entity with user product counts
+	 * @returns added entity with user product counts
+	 */
     addUserProductCount(userProductCount: UserProductCountDTO): Promise<IUserProductCount> {
         return new Promise((resolve, reject) => {
 			pool.query<IUserProductCount>(`INSERT INTO user_product_counts ${userProductCount} RETURNING *`,
@@ -21,6 +27,12 @@ export class CountExecutionRepository extends AbsRepository<ICountExecution, Cou
 		});
     }
 
+	/**
+	 * Get pricing per product record of countexecution from db
+	 *
+	 * @param id identifier of countexecution
+	 * @returns pricing per product
+	 */
 	getPricingByProduct(id: number): Promise<IPricing[]> {
 		return new Promise((resolve, reject) => {
 			pool.query<IPricing>(`SELECT product_id, SUM(price) AS price FROM (${this.getPricingSubquery(id)}) AS p_sub GROUP BY product_id`
@@ -32,6 +44,12 @@ export class CountExecutionRepository extends AbsRepository<ICountExecution, Cou
 		});
 	}
 
+	/**
+	 * Get pricing per category of countexecution from db
+	 *
+	 * @param id identifier of countexecution
+	 * @returns pricing per category
+	 */
 	getPricingByCategory(id: number): Promise<IPricing[]> {
 		return new Promise((resolve, reject) => {
 			pool.query<IPricing>(`SELECT category_id, SUM(price) AS price FROM (${this.getPricingSubquery(id)}) AS p_sub GROUP BY category_id`
@@ -43,6 +61,12 @@ export class CountExecutionRepository extends AbsRepository<ICountExecution, Cou
 		});
 	}
 
+	/**
+	 * Get total pricing of countexecution from db
+	 *
+	 * @param id identifier of countexecution
+	 * @returns total pricing
+	 */
 	getPricing(id: number): Promise<IPricing> {
 		return new Promise((resolve, reject) => {
 			pool.query<IPricing>(`SELECT SUM(price) AS total_price FROM (${this.getPricingSubquery(id)}) AS p_sub`,
@@ -54,6 +78,12 @@ export class CountExecutionRepository extends AbsRepository<ICountExecution, Cou
 		});
 	}
 
+	/**
+	 * Subquery table with calculated prices per product and category
+	 *
+	 * @param id identifier of countexecution
+	 * @returns subquery string
+	 */
 	getPricingSubquery(id: number): string {
 		return `WITH don AS (
 			SELECT t.product_id, t.subproduct_id, t.quantity, o.total_quantity, t.category_id, t.price

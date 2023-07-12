@@ -81,9 +81,6 @@ export class JwtStrategy extends BaseStrategy {
 	@bind
 	private async verify(payload: any, next: any): Promise<void> {
 		try {
-			// pass error == null on error otherwise we get a 500 error instead of 401
-			
-			// this is for people who already registered and have a userid in their token
 			const user: IUser | undefined = await new UserRepository().read(payload.userID);
 			if (!user) {
 				return next(null, null);

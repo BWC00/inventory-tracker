@@ -18,7 +18,11 @@ export class CategoryRoutes implements IComponentRoutes<CategoryController> {
 		this.initRoutes();
 	}
 
+	/**
+	 * Initialize the category routes.
+	 */
 	initRoutes(): void {
+		// Read all categories route
 		this.router.get(
 			'/',
 			this.authSerivce.isAuthorized(),
@@ -26,6 +30,7 @@ export class CategoryRoutes implements IComponentRoutes<CategoryController> {
 			this.controller.readAll
 		);
 
+		// Read a single category route
 		this.router.get(
 			'/:id',
 			this.authSerivce.isAuthorized(),
@@ -35,6 +40,7 @@ export class CategoryRoutes implements IComponentRoutes<CategoryController> {
 			this.controller.read
 		);
 
+		// Create a new category route
 		this.router.post(
 			'/',
 			this.authSerivce.isAuthorized(),
@@ -44,6 +50,7 @@ export class CategoryRoutes implements IComponentRoutes<CategoryController> {
 			this.controller.create
 		);
 
+		// Delete a category route
 		this.router.delete(
 			'/:id',
 			this.authSerivce.isAuthorized(),

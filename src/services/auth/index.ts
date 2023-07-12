@@ -68,7 +68,7 @@ export class AuthService {
 	public hasPermission(resource: string, action: string): Handler {
 		return async (req: Request, res: Response, next: NextFunction) => {
 			try {
-				const { id } = req.user as IUser; //cast to IUser, then get the id from the object
+				const { id } = req.user as IUser;
 				const access: boolean = await policy.isAllowed(id, resource, action);
 
 				if (!access) {

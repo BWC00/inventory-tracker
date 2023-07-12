@@ -26,10 +26,12 @@ import { RedisService } from './services/redis';
 		// Start express server
 		server.listen(env.NODE_PORT);
 
+		// Listen for requests
 		server.on('listening', () => {
 			logger.info(`node server is listening on port ${env.NODE_PORT} in ${env.NODE_ENV} mode`);
 		});
 
+		// Shutdown express server
 		server.on('close', () => {
 			RedisService.disconnect();
 			logger.info('node server closed');

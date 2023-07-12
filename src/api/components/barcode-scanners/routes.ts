@@ -18,7 +18,11 @@ export class BarcodeScannerRoutes implements IComponentRoutes<BarcodeScannerCont
 		this.initRoutes();
 	}
 
+	/**
+	 * Initialize the barcode scanner routes.
+	 */
 	initRoutes(): void {
+		// Read all barcode scanners route
 		this.router.get(
 			'/',
 			this.authSerivce.isAuthorized(),
@@ -26,6 +30,7 @@ export class BarcodeScannerRoutes implements IComponentRoutes<BarcodeScannerCont
 			this.controller.readAll
 		);
 
+		// Read a single barcode scanner route
 		this.router.get(
 			'/:id',
 			this.authSerivce.isAuthorized(),
@@ -35,6 +40,7 @@ export class BarcodeScannerRoutes implements IComponentRoutes<BarcodeScannerCont
 			this.controller.read
 		);
 
+		// Create a new barcode scanner route
 		this.router.post(
 			'/',
 			this.authSerivce.isAuthorized(),
@@ -45,6 +51,7 @@ export class BarcodeScannerRoutes implements IComponentRoutes<BarcodeScannerCont
 			this.controller.create
 		);
 
+		// Delete a barcode scanner route
 		this.router.delete(
 			'/:id',
 			this.authSerivce.isAuthorized(),
