@@ -1,3 +1,8 @@
+/*
+  ##### Database script #####
+  Run the following command to create all tables and seeds
+  'npm run seed'
+*/
 
 -- Role table
 CREATE TABLE IF NOT EXISTS roles (
@@ -49,7 +54,7 @@ CREATE TABLE IF NOT EXISTS product_subproducts (
 CREATE TABLE IF NOT EXISTS barcode_scanners (
   id SERIAL PRIMARY KEY,
   subproduct_id INTEGER NOT NULL,
-  barcode VARCHAR(255) NOT NULL,
+  barcode VARCHAR(255) UNIQUE NOT NULL,
   FOREIGN KEY (subproduct_id) REFERENCES subproducts(id) ON DELETE CASCADE
 );
 
@@ -84,12 +89,12 @@ CREATE TABLE IF NOT EXISTS count_executions (
 CREATE TABLE IF NOT EXISTS user_product_counts (
   id SERIAL PRIMARY KEY,
   count_execution_id INTEGER NOT NULL,
-  subproduct_id INTEGER NOT NULL,
+  barcode_scanner_id INTEGER NOT NULL,
   user_id INTEGER,
   quantity INTEGER CHECK (quantity >= 0),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (count_execution_id) REFERENCES count_executions(id) ON DELETE CASCADE,
-  FOREIGN KEY (subproduct_id) REFERENCES subproducts(id) ON DELETE NO ACTION,
+  FOREIGN KEY (barcode_scanner_id) REFERENCES barcode_scanners(id) ON DELETE NO ACTION,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
@@ -119,7 +124,7 @@ CREATE INDEX IF NOT EXISTS idx_count_executions_count_plan_id ON count_execution
 
 -- user_product_counts table
 CREATE INDEX IF NOT EXISTS idx_user_product_counts_count_execution_id ON user_product_counts (count_execution_id);
-CREATE INDEX IF NOT EXISTS idx_user_product_counts_subproduct_id ON user_product_counts (subproduct_id);
+CREATE INDEX IF NOT EXISTS idx_user_product_counts_barcode_scanner_id ON user_product_counts (barcode_scanner_id);
 CREATE INDEX IF NOT EXISTS idx_user_product_counts_user_id ON user_product_counts (user_id);
 
 
