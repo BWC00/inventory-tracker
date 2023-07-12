@@ -1,17 +1,10 @@
-
 /*
   ##### Database seeding #####
-  Run the following command after all tables were created:
-  'npm run seed'
 */
-
+WITH
 /* Insert user roles */
-INSERT INTO roles (name)
-VALUES	('admin'),
-				('counter');
-
-SET @admin_role_id = (SELECT id FROM roles WHERE name = 'admin');
-
+A AS (INSERT INTO roles (name) VALUES ('admin') RETURNING *),
+B AS (INSERT INTO roles (name) VALUES ('counter')),
 /* Insert admin account */
-INSERT INTO users (email, password, role_id)
-VALUES	('admin@email.com', ?, @admin_role_id);
+C AS (INSERT INTO users (email, password, role_id) VALUES	('admin@email.com', $1, (SELECT id FROM A WHERE name='admin')))
+SELECT * FROM users;

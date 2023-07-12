@@ -1,18 +1,21 @@
 const { Pool } = require('pg');
 const fs = require('fs');
+const bcrypt = require('bcryptjs');
 require('dotenv').config();
-// const bcrypt = require('bcryptjs');
 
-// Read SQL query script to create tables
+// Read SQL tables
 const tableScript = fs.readFileSync('db/tables.sql', {
 	encoding: 'utf-8'
 });
 
+// Read SQL seed
+const seedScript = fs.readFileSync('db/seed.sql', {
+	encoding: 'utf-8'
+});
+
 // Generate random password for initial admin user
-// const psw = Math.random().toString(36).substring(2);
-// console.log("password: ", psw);
-// const hash = bcrypt.hashSync(psw, 10);
-// const modifiedScript = seedScript.replace('?', hash);
+const psw = Math.random().toString(36).substring(2);
+const hash = bcrypt.hashSync(psw, 10);
 
 // Connect to database
 const pool = new Pool({
@@ -28,10 +31,14 @@ const pool = new Pool({
 	const client = await pool.connect();
 	try {
 	  await client.query(tableScript);
-	  console.log('Data inserted successfully!');
+	  await client.query(seedScript, [hash]);
+	  console.log('Data inserted successfully!\n');
 	} catch (error) {
 	  console.error('Error inserting data:', error);
 	} finally {
+	  // Output login credentials
+	  console.log("email: admin@email.com")
+	  console.log("password:", psw);
 	  client.release();
 	  pool.end();
 	}
