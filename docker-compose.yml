@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  server:
+    build: .
+    container_name: inventory-tracker
+    depends_on:
+      - db
+      - redis
+      - mailhog
+    ports:
+      - 3000:3000
+    links:
+      - db
+      - redis
+      - mailhog
+    env_file:
+      - .env.docker
+    command: npm run start-docker
+  db:
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./db/tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+  redis:
+    image: redis
+    restart: always
+    expose:
+      - 6379
+  mailhog:
+    image: mailhog/mailhog
+    restart: always
+    ports:
+      - 1025:1025
+      - 8025:8025
+
+volumes:
+  db:
+    driver: local
