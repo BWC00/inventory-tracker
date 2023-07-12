@@ -8,11 +8,11 @@ List of main node modules used in this app:
 
 - [acl](https://www.npmjs.com/package/acl) checking permissions based on user roles
 - [express](https://www.npmjs.com/package/express) running server
-- [pg](https://www.npmjs.com/package/pg) doing database queries
-- [nodemailer](https://www.npmjs.com/package/nodemailer) sending email notifications to users
-- [passport](https://www.npmjs.com/package/passport) checking authentication based on jwt
+- [pg](https://www.npmjs.com/package/pg) for running database queries
+- [nodemailer](https://www.npmjs.com/package/nodemailer) sends email notifications to users
+- [passport](https://www.npmjs.com/package/passport) checks authentication based on jwt
 - [redis](https://www.npmjs.com/package/redis) used for caching, faster data retrieval
-- [node-schedule](https://www.npmjs.com/package/node-schedule) used for repetition scheduling
+- [node-schedule](https://www.npmjs.com/package/node-schedule) used for repetition scheduling (executing countexecutions periodically based on a schedule represented by a cron expression)
 
 ## Features
 
@@ -87,7 +87,7 @@ inventory-tracker
 ```
 As you can see a component consists of the files I just mentioned before. Most of them represents a single class that is exported. Of course, you can add here more component specific stuff.
 
-Since I have multiple components and their classes have the same structure most of the time, I also create interfaces that are implemented in the classes. This helps me to keep the components’ structure straight.
+Since I have multiple components and their classes have the same structure most of the time, I also created interfaces and generic/parameterized abstract classes that are implemented in the components to ensure code resuseability. This helps me to keep the components’ structure straight.
 
 ### Directory: src/api/middleware
 ```shell
@@ -135,6 +135,7 @@ This directory includes the API’s configuration files. This could be for examp
 - logger config
 - ACL permissions
 - SMTP config
+- DB config
 
 ### Directory: src/services
 ```shell
@@ -149,15 +150,15 @@ inventory-tracker
 │   ├── redis.ts
 │   └── utility.ts
 ```
-This directory contains global services we might need for authorization, sending mails, caching, or helper methods for example.
+This directory contains global services we might need for for example authorization, sending mails, caching, or helper methods for password hashing, etc..
 
 ### File: src/app.ts
 ```shell
-expressjs-api
+inventory-tracker
 └───src
     │   app.ts
 ```
-This is the startup file of our application. It initializes the database connection and starts the express server.
+This is the startup file of our application. It initializes the database connection, redis client and starts the express server.
 
 ## Setup
 
