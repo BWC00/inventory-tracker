@@ -6,8 +6,10 @@ import { ExtractJwt, StrategyOptions } from 'passport-jwt';
 import { validationResult } from 'express-validator';
 
 import { env } from '../../config/globals';
+import { policy } from '../../config/policy';
 
 import { JwtStrategy } from './strategies/jwt';
+import { IUser } from '../../api/components/users/model';
 
 export type PassportStrategy = 'jwt';
 
@@ -66,6 +68,14 @@ export class AuthService {
 	public hasPermission(resource: string, action: string): Handler {
 		return async (req: Request, res: Response, next: NextFunction) => {
 			try {
+				const { id } = req.user as IUser; //cast to IUser, then get the id from the object
+				const access: boolean = await policy.isAllowed(id, resource, action);
+
+				if (!access) {
+					return res.status(403).json({
+						error: 'Missing user rights!'
+					});
+				}
 
 				return next();
 			} catch (err) {
@@ -98,6 +108,11 @@ export class AuthService {
 					const tempStrategy: PassportStrategy = strategy || this.defaultStrategy;
 					return this.doAuthentication(req, res, next, tempStrategy);
 				}
+
+				// Mock user
+				// const testUser: User = User.mockTestUser();
+				// req.user = testUser;
+				// policy.addUserRoles(testUser.id, testUser.userRole.name);
 
 				return next();
 			} catch (err) {
