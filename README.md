@@ -63,11 +63,16 @@ This directory includes all REST-API related files like components, the Express 
 inventory-tracker
 ├── api
 │   ├── components
+│   │   ├── abstracts
 │   │   ├── auth
-│   │   ├── user
-│   │   ├── user-invitation
-│   │   ├── user-role
-│   │   ├── helper.ts
+│   │   ├── barcode-scanners
+│   │   ├── categories
+│   │   ├── count-executions
+│   │   ├── count-plans
+│   │   ├── products
+│   │   ├── roles
+│   │   ├── subproducts
+│   │   ├── users
 │   │   └── index.ts
 ```
 Here we have the heart of our component based Node API. Each component has its own routes, controller, model, repository, policies, tests and templates.
@@ -87,7 +92,17 @@ inventory-tracker
 ```
 As you can see a component consists of the files I just mentioned before. Most of them represents a single class that is exported. Of course, you can add here more component specific stuff.
 
-Since I have multiple components and their classes have the same structure most of the time, I also created interfaces and generic/parameterized abstract classes that are implemented in the components to ensure code resuseability. This helps me to keep the components’ structure straight.
+### Directory: src/api/components/abstracts
+```shell
+inventory-tracker
+├── api
+│   ├── components
+│   │   ├── abstracts
+│   │   │   ├── controller.ts
+│   │   │   ├── repository.ts
+│   │   │   └── routes.ts
+```
+Since I have multiple components and their classes have the same structure most of the time, I also created interfaces and generic/parameterized abstract classes to ensure code resuseability. This helps me to keep the components’ structure straight and avoid code duplication.
 
 ### Directory: src/api/middleware
 ```shell
