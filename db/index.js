@@ -37,7 +37,7 @@ const pool = new Pool({
 	  console.error('Error inserting data:', error);
 	} finally {
 	  // Output login credentials
-	  console.log("email: admin@email.com")
+	  console.log("email: admin@admin.com")
 	  console.log("password:", psw);
 	  client.release();
 	  pool.end();
