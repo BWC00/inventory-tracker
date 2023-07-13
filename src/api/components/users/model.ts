@@ -42,7 +42,7 @@ export class UserDTO {
      * @returns A new UserDTO instance populated with data from the request.
      */
 	fromRequest(req: Request) {
-		const { email, password } = req.body;
-		return new UserDTO(email, password);
+		const { email, password, role_id } = req.body;
+		return new UserDTO(email, password, +role_id);
 	}
 }

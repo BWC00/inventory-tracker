@@ -63,6 +63,7 @@ export class UserRoutes implements IComponentRoutes<UserController> {
 			this.authSerivce.hasPermission(this.name, 'create'),
 			body('email').isEmail(),
 			body('password').isString(),
+			body('role_id').isNumeric(),
 			this.authSerivce.validateRequest,
 			this.controller.create
 		);

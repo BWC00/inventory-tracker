@@ -29,15 +29,17 @@ export class UserController extends AbsController<IUser, UserDTO, UserRepository
 
 			const dto = this.tdto.fromRequest(req);
 
-			// Check if user exists
+			// Check if email is taken
 			const existingUser = await this.repo.readByEmail(dto.email);
 			if (existingUser !== undefined) {
 				return res.status(400).json({ status: 400, error: 'Email is already taken' });
 			}
 
-			// Give user the 'counter' role by default
-			const role = await this.roleRepo.readByName('counter');
-			dto.roleId = role.id
+			// Check if role exists
+			const role = await this.roleRepo.read(dto.roleId);
+			if (!role) {
+				return res.status(404).json({ status: 404, error: 'Role not found' });
+			}
 
 			// Generate hash of password
 			dto.password = await UtilityService.hashPassword(dto.password);

@@ -32,14 +32,14 @@ export class AuthController {
 	@bind
 	async signinUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
-			// Extract email and password from the request body
-			const { email, password } = req.body;
+			// Create a UserDTO instance from the request body
+			const dto = new UserDTO().fromRequest(req);
 
 			// Find the user based on the provided email
-			const user: IUser | undefined = await this.repo.readByEmail(email);
+			const user: IUser | undefined = await this.repo.readByEmail(dto.email);
 
 			// Check if the user exists and verify the password
-			if (!user || !(await UtilityService.verifyPassword(password, user.password))) {
+			if (!user || !(await UtilityService.verifyPassword(dto.password, user.password))) {
 				return res.status(401).json({ status: 401, error: 'Wrong email or password' });
 			}
 
@@ -88,6 +88,9 @@ export class AuthController {
 
 			// Create the user using the UserRepository
 			const savedUser = await this.repo.create(dto);
+
+			// Don't send user password in response
+			delete savedUser.password;
 
 			// Return the created user in the response
 			return res.status(201).json(savedUser);
